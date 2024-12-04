@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sign Up Page for a modern application.">
+    <meta name="author" content="Your Name">
+    <title>Sign Up Page</title>
+
+    <!-- External CSS and Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+
+    <!-- Inline Custom Styles -->
+    <style>
+        /* Основной стиль для страницы */
+        body {
+            font-family: 'Inter', sans-serif; /* Используем шрифт Inter */
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            min-height: 100vh; /* Высота экрана */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0; /* Сброс отступов */
+        }
+
+        /* Каркас формы */
+        .form-container {
+            background: rgba(255, 255, 255, 0.1); /* Прозрачный фон */
+            padding: 2rem;
+            border-radius: 15px; /* Скругленные углы */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Тень */
+            backdrop-filter: blur(10px); /* Эффект размытия */
+            width: 100%;
+            max-width: 400px; /* Ограничение ширины */
+        }
+
+        /* Заголовок */
+        .form-container h1 {
+            font-weight: 700; /* Толстый шрифт */
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 1.5rem; /* Отступ снизу */
+        }
+
+        /* Поля ввода */
+        .form-floating input {
+            background: rgba(255, 255, 255, 0.2); /* Прозрачный фон */
+            color: #fff;
+            border: none; /* Без обводки */
+        }
+
+        /* Плейсхолдер */
+        .form-floating input::placeholder {
+            color: #ddd;
+        }
+
+        /* Метки */
+        .form-floating label {
+            color: #fff;
+        }
+
+        /* Фокус на поле */
+        .form-floating input:focus {
+            border: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); /* Белая обводка */
+        }
+
+        /* Кнопка отправки */
+        .btn-custom {
+            background: #6a11cb;
+            color: #fff;
+            border: none;
+            padding: 0.7rem;
+            font-size: 1rem;
+            border-radius: 10px;
+            transition: 0.3s ease; /* Плавный переход */
+        }
+
+        /* Эффект при наведении */
+        .btn-custom:hover {
+            background: #2575fc; /* Смена цвета */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Добавление тени */
+        }
+
+        /* Футер */
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Ссылки в футере */
+        .footer a {
+            color: #ddd;
+            text-decoration: underline; /* Подчеркнутый текст */
+        }
+
+        /* Эффект наведения на ссылки */
+        .footer a:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Основная форма -->
+    <div class="form-container">
+        <h1>Sign Up</h1> <!-- Заголовок формы -->
+
+        <!-- Форма регистрации -->
+        <form id="signUpForm" method="post" action="/api/users/register">
+            <div class="form-floating mb-4">
+                <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required>
+                <label for="email">Email Address</label>
+            </div>
+            <div class="form-floating mb-4">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                <label for="password">Password</label>
+            </div>
+            <div class="form-floating mb-4">
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
+                <label for="confirm_password">Confirm Password</label>
+            </div>
+            <!-- Кнопка для отправки формы -->
+            <button type="submit" class="btn btn-custom w-100">Create Account</button>
+            <p class="text-center mt-3">
+                <a href="sign-in.html" style="color: #fff;">Already have an account? Sign In</a>
+            </p>
+        </form>
+
+        <!-- Кнопка для перехода на главную -->
+        <button class="btn btn-custom w-100 mt-3" onclick="location.href='index.html'">Home Page</button>
+        <p id="error" class="text-danger text-center mt-2"></p>
+        <p id="message" class="text-success text-center mt-2"></p>
+    </div>
+
+    <!-- JavaScript для обработки формы -->
+    <script>
+        document.getElementById('signUpForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/api/users/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = 'my-account.html';
+                } else {
+                    throw new Error('Registration failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('error').textContent = 'Failed to create account. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>
+
